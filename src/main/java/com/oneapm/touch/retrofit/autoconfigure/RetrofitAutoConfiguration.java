@@ -29,6 +29,7 @@ import org.springframework.util.ResourceUtils;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.Retrofit.Builder;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.List;
@@ -129,6 +130,19 @@ public class RetrofitAutoConfiguration {
     }
 
     @Configuration
+    @ConditionalOnClass(GsonConverterFactory.class)
+    public static class GsonConverterFactoryConfiguration{
+
+        @Bean
+        @ConditionalOnMissingBean
+        public GsonConverterFactory gsonConverterFactory(){
+            return GsonConverterFactory.create();
+        }
+    }
+
+
+
+    @Configuration
     @ConditionalOnClass(JacksonConverterFactory.class)
     public static class JacksonConverterFactoryConfiguration {
 
@@ -148,6 +162,8 @@ public class RetrofitAutoConfiguration {
             return JacksonConverterFactory.create(mapper);
         }
     }
+
+
 
     @Bean
     @ConditionalOnMissingBean
